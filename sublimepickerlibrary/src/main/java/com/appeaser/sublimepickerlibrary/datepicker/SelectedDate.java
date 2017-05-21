@@ -97,6 +97,10 @@ public class SelectedDate {
         }
     }
 
+    public static long getDifferenceDates(Calendar start, Calendar end){
+        return end.getTimeInMillis() - start.getTimeInMillis();
+    }
+
     public void setTimeInMillis(long timeInMillis) {
         mFirstDate.setTimeInMillis(timeInMillis);
         mSecondDate.setTimeInMillis(timeInMillis);

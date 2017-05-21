@@ -117,6 +117,8 @@ public class SublimeDatePicker extends FrameLayout {
 
     private boolean mIsInLandscapeMode;
 
+    private boolean canPickRange;
+
     public SublimeDatePicker(Context context) {
         this(context, null);
     }
@@ -132,7 +134,7 @@ public class SublimeDatePicker extends FrameLayout {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public SublimeDatePicker(Context context, AttributeSet attrs,
-                                     int defStyleAttr, int defStyleRes) {
+                             int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initializeLayout(attrs, defStyleAttr, defStyleRes);
     }
@@ -296,29 +298,52 @@ public class SublimeDatePicker extends FrameLayout {
                 Log.i(TAG, "tvHeaderDateEnd is activated? " + tvHeaderDateEnd.isActivated());
             }
 
-            boolean goToPosition = true;
+            boolean goToPosition = false;
 
-            if (llHeaderDateRangeCont.getVisibility() == View.VISIBLE) {
-                // We're in Range selection mode
-                if (tvHeaderDateStart.isActivated()) {
-                    if (SelectedDate.compareDates(day, mCurrentDate.getEndDate()) > 0) {
-                        mCurrentDate = new SelectedDate(day);
-                    } else {
-                        goToPosition = false;
-                        mCurrentDate = new SelectedDate(day, mCurrentDate.getEndDate());
-                    }
-                } else if (tvHeaderDateEnd.isActivated()) {
-                    if (SelectedDate.compareDates(day, mCurrentDate.getStartDate()) < 0) {
-                        mCurrentDate = new SelectedDate(day);
-                    } else {
-                        goToPosition = false;
+            if (canPickRange) {
+                // Lets my algorithm works
+                if (SelectedDate.compareDates(day, mCurrentDate.getStartDate()) < 0 &&
+                        SelectedDate.compareDates(day, mCurrentDate.getEndDate()) < 0) {
+                    // if user click day before current selection
+                    mCurrentDate = new SelectedDate(day, mCurrentDate.getEndDate());
+
+                } else if (SelectedDate.compareDates(day, mCurrentDate.getStartDate()) > 0 &&
+                        SelectedDate.compareDates(day, mCurrentDate.getEndDate()) > 0) {
+                    // if user click day after current selection
+                    mCurrentDate = new SelectedDate(mCurrentDate.getStartDate(), day);
+                } else {
+                    long different = SelectedDate.getDifferenceDates(day, mCurrentDate.getStartDate()) -
+                            SelectedDate.getDifferenceDates(mCurrentDate.getEndDate(), day);
+                    if (different > 0) {
                         mCurrentDate = new SelectedDate(mCurrentDate.getStartDate(), day);
+                    } else if (different < 0) {
+                        mCurrentDate = new SelectedDate(day, mCurrentDate.getEndDate());
+                    } else {
+                        mCurrentDate = new SelectedDate(day);
+                        goToPosition = true;
                     }
-                } else { // Should never happen
-                    if (Config.DEBUG) {
-                        Log.i(TAG, "onDaySelected: Neither tvDateStart, nor tvDateEnd is activated");
-                    }
+
                 }
+                // We're in Range selection mode
+//                if (tvHeaderDateStart.isActivated()) {
+//                    if (SelectedDate.compareDates(day, mCurrentDate.getEndDate()) > 0) {
+//                        mCurrentDate = new SelectedDate(day);
+//                    } else {
+//                        goToPosition = false;
+//                        mCurrentDate = new SelectedDate(day, mCurrentDate.getEndDate());
+//                    }
+//                } else if (tvHeaderDateEnd.isActivated()) {
+//                    if (SelectedDate.compareDates(day, mCurrentDate.getStartDate()) < 0) {
+//                        mCurrentDate = new SelectedDate(day);
+//                    } else {
+//                        goToPosition = false;
+//                        mCurrentDate = new SelectedDate(mCurrentDate.getStartDate(), day);
+//                    }
+//                } else { // Should never happen
+//                    if (Config.DEBUG) {
+//                        Log.i(TAG, "onDaySelected: Neither tvDateStart, nor tvDateEnd is activated");
+//                    }
+//                }
             } else {
                 mCurrentDate = new SelectedDate(day);
             }
@@ -483,11 +508,12 @@ public class SublimeDatePicker extends FrameLayout {
             case VIEW_MONTH_DAY:
                 mDayPickerView.setDate(mCurrentDate);
 
-                if (mCurrentDate.getType() == SelectedDate.Type.SINGLE) {
-                    switchToSingleDateView();
-                } else if (mCurrentDate.getType() == SelectedDate.Type.RANGE) {
-                    switchToDateRangeView();
-                }
+//                if (mCurrentDate.getType() == SelectedDate.Type.SINGLE) {
+//                    switchToSingleDateView();
+//                } else if (mCurrentDate.getType() == SelectedDate.Type.RANGE) {
+//                    switchToDateRangeView();
+//                }
+                switchToDateRangeView();
 
                 if (mCurrentView != viewIndex) {
                     if (mAnimator.getDisplayedChild() != VIEW_MONTH_DAY) {
@@ -515,10 +541,10 @@ public class SublimeDatePicker extends FrameLayout {
      * Initialize the state. If the provided values designate an inconsistent
      * date the values are normalized before updating the spinners.
      *
-     * @param selectedDate  The initial date or date range.
-     * @param canPickRange  Enable/disable date range selection
-     * @param callback      How user is notified date is changed by
-     *                      user, can be null.
+     * @param selectedDate The initial date or date range.
+     * @param canPickRange Enable/disable date range selection
+     * @param callback     How user is notified date is changed by
+     *                     user, can be null.
      */
     //public void init(int year, int monthOfYear, int dayOfMonth, boolean canPickRange,
     public void init(SelectedDate selectedDate, boolean canPickRange,
@@ -527,6 +553,7 @@ public class SublimeDatePicker extends FrameLayout {
         //mCurrentDate.set(Calendar.MONTH, monthOfYear);
         //mCurrentDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         mCurrentDate = new SelectedDate(selectedDate);
+        this.canPickRange = canPickRange;
 
         mDayPickerView.setCanPickRange(canPickRange);
         mDateChangedListener = callback;
@@ -582,16 +609,20 @@ public class SublimeDatePicker extends FrameLayout {
                     + mCurrentDate.getSecondDate().getTimeInMillis());
         }
 
-        if (mCurrentDate.getType() == SelectedDate.Type.SINGLE) {
-            switchToSingleDateView();
-        } else if (mCurrentDate.getType() == SelectedDate.Type.RANGE) {
-            switchToDateRangeView();
-        }
+//        if (mCurrentDate.getType() == SelectedDate.Type.SINGLE) {
+//            switchToSingleDateView();
+//        } else if (mCurrentDate.getType() == SelectedDate.Type.RANGE) {
+//            switchToDateRangeView();
+//        }
+
+        switchToDateRangeView();
+
     }
 
     private void switchToSingleDateView() {
-        mCurrentlyActivatedRangeItem = RANGE_ACTIVATED_NONE;
-
+        if (mCurrentlyActivatedRangeItem == RANGE_ACTIVATED_NONE) {
+            mCurrentlyActivatedRangeItem = RANGE_ACTIVATED_START;
+        }
         ivHeaderDateReset.setVisibility(View.GONE);
         llHeaderDateRangeCont.setVisibility(View.INVISIBLE);
         llHeaderDateSingleCont.setVisibility(View.VISIBLE);
@@ -605,12 +636,21 @@ public class SublimeDatePicker extends FrameLayout {
             mCurrentlyActivatedRangeItem = RANGE_ACTIVATED_START;
         }
 
-        llHeaderDateSingleCont.setVisibility(View.INVISIBLE);
-        ivHeaderDateReset.setVisibility(View.VISIBLE);
-        llHeaderDateRangeCont.setVisibility(View.VISIBLE);
+        if (mCurrentDate.getType() == SelectedDate.Type.SINGLE) {
+            llHeaderDateSingleCont.setVisibility(View.VISIBLE);
+            ivHeaderDateReset.setVisibility(View.INVISIBLE);
+            llHeaderDateRangeCont.setVisibility(View.INVISIBLE);
 
-        tvHeaderDateStart.setActivated(mCurrentlyActivatedRangeItem == RANGE_ACTIVATED_START);
-        tvHeaderDateEnd.setActivated(mCurrentlyActivatedRangeItem == RANGE_ACTIVATED_END);
+            tvHeaderDateStart.setActivated(false);
+            tvHeaderDateEnd.setActivated(true);
+        } else if (mCurrentDate.getType() == SelectedDate.Type.RANGE) {
+            llHeaderDateSingleCont.setVisibility(View.INVISIBLE);
+            ivHeaderDateReset.setVisibility(View.VISIBLE);
+            llHeaderDateRangeCont.setVisibility(View.VISIBLE);
+
+            tvHeaderDateStart.setActivated(mCurrentlyActivatedRangeItem == RANGE_ACTIVATED_START);
+            tvHeaderDateEnd.setActivated(mCurrentlyActivatedRangeItem == RANGE_ACTIVATED_END);
+        }
     }
 
     public SelectedDate getSelectedDate() {
