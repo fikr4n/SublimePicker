@@ -1,5 +1,6 @@
 /*
  * Copyright 2016 Vikram Kakkar
+ * Edited by wahidnr
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,12 +56,13 @@ import java.util.TimeZone;
  * material-styled (API 23) DatePicker, TimePicker
  * and RecurrencePicker, backported to API 14.
  * You can opt for any combination of these three Pickers.
+ * <p>
+ * Edited by wahidnr
  */
 public class SublimePicker extends FrameLayout
         implements SublimeDatePicker.OnDateChangedListener,
         SublimeDatePicker.DatePickerValidationCallback,
         SublimeTimePicker.TimePickerValidationCallback {
-    private static final String TAG = SublimePicker.class.getSimpleName();
 
     // Used for formatting date range
     private static final long MONTH_IN_MILLIS = DateUtils.YEAR_IN_MILLIS / 12;
@@ -177,7 +179,6 @@ public class SublimePicker extends FrameLayout
 
         llMainContentHolder = (LinearLayout) findViewById(R.id.llMainContentHolder);
         mButtonLayout = new ButtonHandler(this);
-//        initializeRecurrencePickerSwitch();
 
         mDatePicker = (SublimeDatePicker) findViewById(R.id.datePicker);
         mTimePicker = (SublimeTimePicker) findViewById(R.id.timePicker);
@@ -323,53 +324,6 @@ public class SublimePicker extends FrameLayout
         }
     }
 
-    /*
-
-    private void initializeRecurrencePickerSwitch() {
-        ivRecurrenceOptionsDP = (ImageView) findViewById(R.id.ivRecurrenceOptionsDP);
-        ivRecurrenceOptionsTP = (ImageView) findViewById(R.id.ivRecurrenceOptionsTP);
-
-        int iconColor, pressedStateBgColor;
-
-        TypedArray typedArray = getContext().obtainStyledAttributes(R.styleable.SublimePicker);
-        try {
-            iconColor = typedArray.getColor(R.styleable.SublimePicker_spOverflowIconColor,
-                    SUtils.COLOR_TEXT_PRIMARY_INVERSE);
-            pressedStateBgColor = typedArray.getColor(R.styleable.SublimePicker_spOverflowIconPressedBgColor,
-                    SUtils.COLOR_TEXT_PRIMARY);
-        } finally {
-            typedArray.recycle();
-        }
-
-        ivRecurrenceOptionsDP.setImageDrawable(
-                new OverflowDrawable(getContext(), iconColor));
-        SUtils.setViewBackground(ivRecurrenceOptionsDP,
-                SUtils.createOverflowButtonBg(pressedStateBgColor));
-
-        ivRecurrenceOptionsTP.setImageDrawable(
-                new OverflowDrawable(getContext(), iconColor));
-        SUtils.setViewBackground(ivRecurrenceOptionsTP,
-                SUtils.createOverflowButtonBg(pressedStateBgColor));
-
-        ivRecurrenceOptionsDP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCurrentPicker = SublimeOptions.Picker.REPEAT_OPTION_PICKER;
-                updateDisplay();
-            }
-        });
-
-        ivRecurrenceOptionsTP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCurrentPicker = SublimeOptions.Picker.REPEAT_OPTION_PICKER;
-                updateDisplay();
-            }
-        });
-    }
-
-    */
-
     @Override
     protected Parcelable onSaveInstanceState() {
         return new SavedState(super.onSaveInstanceState(), mCurrentPicker, mHiddenPicker);
@@ -466,12 +420,6 @@ public class SublimePicker extends FrameLayout
         mTimePickerEnabled = mOptions.isTimePickerActive();
 
         if (mDatePickerEnabled) {
-            //int[] dateParams = mOptions.getDateParams();
-            //mDatePicker.init(dateParams[0] /* year */,
-            //        dateParams[1] /* month of year */,
-            //        dateParams[2] /* day of month */,
-            //        mOptions.canPickDateRange(),
-            //        this);
             mDatePicker.init(mOptions.getDateParams(), mOptions.canPickDateRange(), this);
 
             long[] dateRange = mOptions.getDateRange();
@@ -528,11 +476,6 @@ public class SublimePicker extends FrameLayout
 
     @Override
     public void onDateChanged(SublimeDatePicker view, SelectedDate selectedDate) {
-        // TODO: Consider removing this propagation of date change event altogether
-        //mDatePicker.init(selectedDate.getStartDate().get(Calendar.YEAR),
-        //selectedDate.getStartDate().get(Calendar.MONTH),
-        //selectedDate.getStartDate().get(Calendar.DAY_OF_MONTH),
-        //mOptions.canPickDateRange(), this);
         mDatePicker.init(selectedDate, mOptions.canPickDateRange(), this);
     }
 

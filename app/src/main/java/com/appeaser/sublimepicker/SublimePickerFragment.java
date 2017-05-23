@@ -1,5 +1,6 @@
 /*
  * Copyright 2015 Vikram Kakkar
+ * Edited by wahidnr
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,7 +67,8 @@ public class SublimePickerFragment extends DialogFragment {
             // Should actually be called by activity inside `Callback.onCancelled()`
             dismiss();
         }
-// You can also override 'formatDate(Date)' & 'formatTime(Date)'
+
+        // You can also override 'formatDate(Date)' & 'formatTime(Date)'
         // to supply custom formatters.
     };
 
@@ -85,15 +87,6 @@ public class SublimePickerFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        /*try {
-            //getActivity().getLayoutInflater()
-                    //.inflate(R.layout.sublime_recurrence_picker, new FrameLayout(getActivity()), true);
-            getActivity().getLayoutInflater()
-                    .inflate(R.layout.sublime_date_picker, new FrameLayout(getActivity()), true);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException();
-        }*/
 
         mSublimePicker = (SublimePicker) getActivity()
                 .getLayoutInflater().inflate(R.layout.sublime_picker, container);

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
      Copyright 2015 Vikram Kakkar
+     Edited by wahidnr
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -33,19 +34,19 @@
                 android:id="@+id/tvActivatedPickers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pickers to activate:"
-                android:paddingTop="20dp"
                 android:paddingLeft="20dp"
-                android:textStyle="bold"
-                android:textSize="@dimen/sampler_text_size" />
+                android:paddingTop="20dp"
+                android:text="Pickers to activate:"
+                android:textSize="@dimen/sampler_text_size"
+                android:textStyle="bold" />
 
             <LinearLayout
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:paddingRight="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp">
 
                 <CheckBox
                     android:id="@+id/cbDatePicker"
@@ -67,20 +68,20 @@
                 android:id="@+id/tvPickerToShow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Picker to show on dialog creation:"
-                android:paddingTop="20dp"
                 android:paddingLeft="20dp"
-                android:textStyle="bold"
-                android:textSize="@dimen/sampler_text_size" />
+                android:paddingTop="20dp"
+                android:text="Picker to show on dialog creation:"
+                android:textSize="@dimen/sampler_text_size"
+                android:textStyle="bold" />
 
             <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:paddingRight="20dp"
+                android:animateLayoutChanges="true"
                 android:orientation="vertical"
-                android:animateLayoutChanges="true">
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="10dp">
 
                 <RadioButton
                     android:id="@+id/rbDatePicker"
@@ -102,20 +103,20 @@
                 android:id="@+id/tvMoreOptionsLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="More options:"
-                android:paddingTop="20dp"
                 android:paddingLeft="20dp"
-                android:textStyle="bold"
-                android:textSize="@dimen/sampler_text_size" />
+                android:paddingTop="20dp"
+                android:text="More options:"
+                android:textSize="@dimen/sampler_text_size"
+                android:textStyle="bold" />
 
             <CheckBox
                 android:id="@+id/cbAllowDateRangeSelection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
                 android:text="Allow date range selection?"
                 android:textSize="@dimen/sampler_text_size" />
 
@@ -123,10 +124,10 @@
                 android:id="@+id/rlDateTimeRecurrenceInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginBottom="100dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginBottom="100dp"
+                android:orientation="vertical"
                 android:visibility="gone">
 
                 <TextView
@@ -136,20 +137,20 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:textColor="?attr/colorAccent"
+                    android:text="date"
                     android:textAllCaps="true"
-                    android:text="date" />
+                    android:textColor="?attr/colorAccent"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
                 <FrameLayout
                     android:id="@+id/flDateHolder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvDateLabel"
-                    android:background="@drawable/info_bg"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/info_bg">
 
                     <LinearLayout
                         android:id="@+id/llDateHolder"
@@ -161,24 +162,24 @@
                             android:id="@+id/tvYear"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_margin="10dp"
+                            android:layout_weight="1"
                             android:textColor="@android:color/white" />
 
                         <TextView
                             android:id="@+id/tvMonth"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_margin="10dp"
+                            android:layout_weight="1"
                             android:textColor="@android:color/white" />
 
                         <TextView
                             android:id="@+id/tvDay"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
                             android:layout_margin="10dp"
+                            android:layout_weight="1"
                             android:textColor="@android:color/white" />
 
                     </LinearLayout>
@@ -202,9 +203,9 @@
                             android:id="@+id/tvEndDate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
                             android:textColor="@android:color/white" />
 
                     </LinearLayout>
@@ -219,36 +220,36 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:textColor="?attr/colorAccent"
+                    android:text="time"
                     android:textAllCaps="true"
-                    android:text="time" />
+                    android:textColor="?attr/colorAccent"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/llTimeHolder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_below="@id/tvTimeLabel"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/info_bg"
-                    android:layout_below="@id/tvTimeLabel">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tvHour"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_margin="10dp"
+                        android:layout_weight="1"
                         android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/tvMinute"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_margin="10dp"
+                        android:layout_weight="1"
                         android:textColor="@android:color/white" />
 
                     <Space
@@ -268,13 +269,13 @@
         android:id="@+id/ivLaunchPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="28dp"
+        android:layout_gravity="bottom|right"
         android:layout_marginBottom="15dp"
         android:layout_marginRight="15dp"
-        android:layout_gravity="bottom|right"
-        android:src="@drawable/launch_picker"
         android:background="@drawable/floating_button_shape"
-        android:contentDescription="launch sublime picker" />
+        android:contentDescription="launch sublime picker"
+        android:padding="28dp"
+        android:src="@drawable/launch_picker" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
