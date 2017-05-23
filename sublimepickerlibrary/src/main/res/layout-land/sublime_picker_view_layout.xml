@@ -34,10 +34,4 @@
 
     </LinearLayout>
 
-    <com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker
-        android:id="@+id/repeat_option_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-
 </merge>
