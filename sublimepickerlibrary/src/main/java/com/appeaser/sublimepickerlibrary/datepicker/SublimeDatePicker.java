@@ -315,35 +315,15 @@ public class SublimeDatePicker extends FrameLayout {
                     long different = SelectedDate.getDifferenceDates(day, mCurrentDate.getStartDate()) -
                             SelectedDate.getDifferenceDates(mCurrentDate.getEndDate(), day);
                     if (different > 0) {
-                        mCurrentDate = new SelectedDate(mCurrentDate.getStartDate(), day);
-                    } else if (different < 0) {
                         mCurrentDate = new SelectedDate(day, mCurrentDate.getEndDate());
+                    } else if (different < 0) {
+                        mCurrentDate = new SelectedDate(mCurrentDate.getStartDate(), day);
                     } else {
                         mCurrentDate = new SelectedDate(day);
                         goToPosition = true;
                     }
 
                 }
-                // We're in Range selection mode
-//                if (tvHeaderDateStart.isActivated()) {
-//                    if (SelectedDate.compareDates(day, mCurrentDate.getEndDate()) > 0) {
-//                        mCurrentDate = new SelectedDate(day);
-//                    } else {
-//                        goToPosition = false;
-//                        mCurrentDate = new SelectedDate(day, mCurrentDate.getEndDate());
-//                    }
-//                } else if (tvHeaderDateEnd.isActivated()) {
-//                    if (SelectedDate.compareDates(day, mCurrentDate.getStartDate()) < 0) {
-//                        mCurrentDate = new SelectedDate(day);
-//                    } else {
-//                        goToPosition = false;
-//                        mCurrentDate = new SelectedDate(mCurrentDate.getStartDate(), day);
-//                    }
-//                } else { // Should never happen
-//                    if (Config.DEBUG) {
-//                        Log.i(TAG, "onDaySelected: Neither tvDateStart, nor tvDateEnd is activated");
-//                    }
-//                }
             } else {
                 mCurrentDate = new SelectedDate(day);
             }
@@ -508,12 +488,7 @@ public class SublimeDatePicker extends FrameLayout {
             case VIEW_MONTH_DAY:
                 mDayPickerView.setDate(mCurrentDate);
 
-//                if (mCurrentDate.getType() == SelectedDate.Type.SINGLE) {
-//                    switchToSingleDateView();
-//                } else if (mCurrentDate.getType() == SelectedDate.Type.RANGE) {
-//                    switchToDateRangeView();
-//                }
-                switchToDateRangeView();
+                switchView();
 
                 if (mCurrentView != viewIndex) {
                     if (mAnimator.getDisplayedChild() != VIEW_MONTH_DAY) {
@@ -609,13 +584,7 @@ public class SublimeDatePicker extends FrameLayout {
                     + mCurrentDate.getSecondDate().getTimeInMillis());
         }
 
-//        if (mCurrentDate.getType() == SelectedDate.Type.SINGLE) {
-//            switchToSingleDateView();
-//        } else if (mCurrentDate.getType() == SelectedDate.Type.RANGE) {
-//            switchToDateRangeView();
-//        }
-
-        switchToDateRangeView();
+        switchView();
 
     }
 
@@ -631,7 +600,7 @@ public class SublimeDatePicker extends FrameLayout {
         mHeaderYear.setActivated(false);
     }
 
-    private void switchToDateRangeView() {
+    private void switchView() {
         if (mCurrentlyActivatedRangeItem == RANGE_ACTIVATED_NONE) {
             mCurrentlyActivatedRangeItem = RANGE_ACTIVATED_START;
         }
