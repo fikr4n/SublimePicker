@@ -22,7 +22,6 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
-import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 import com.appeaser.sublimepickerlibrary.utilities.SUtils;
 
 import java.util.Calendar;
@@ -48,14 +47,12 @@ public class SublimeOptions implements Parcelable {
 
     // Date & Time params
     private int mStartYear = -1, mStartMonth = -1, mStartDayOfMonth = -1,
-                mEndYear = -1, mEndMonth = -1, mEndDayOfMonth = -1,
-                mHourOfDay = -1, mMinute = -1;
+            mEndYear = -1, mEndMonth = -1, mEndDayOfMonth = -1,
+            mHourOfDay = -1, mMinute = -1;
     //private int mYear = -1, mMonthOfYear = -1, mDayOfMonth = -1, mHourOfDay = -1, mMinute = -1;
     private long mMinDate = Long.MIN_VALUE, mMaxDate = Long.MIN_VALUE;
     private boolean mAnimateLayoutChanges, mIs24HourView;
 
-    private SublimeRecurrencePicker.RecurrenceOption mRecurrenceOption
-            = SublimeRecurrencePicker.RecurrenceOption.DOES_NOT_REPEAT;
     private String mRecurrenceRule = "";
 
     // Allow date range selection
@@ -190,38 +187,10 @@ public class SublimeOptions implements Parcelable {
         return this;
     }
 
-    // Provide initial Recurrence-rule
-    @SuppressWarnings("unused")
-    public SublimeOptions setRecurrenceParams(SublimeRecurrencePicker.RecurrenceOption recurrenceOption, String recurrenceRule) {
-
-        // If passed recurrence option is null, take it as the does_not_repeat option.
-        // If passed recurrence option is custom, but the passed recurrence rule is null/empty,
-        // take it as the does_not_repeat option.
-        // If passed recurrence option is not custom, nullify the recurrence rule.
-        if (recurrenceOption == null
-                || (recurrenceOption == SublimeRecurrencePicker.RecurrenceOption.CUSTOM
-                && TextUtils.isEmpty(recurrenceRule))) {
-            recurrenceOption = SublimeRecurrencePicker.RecurrenceOption.DOES_NOT_REPEAT;
-            recurrenceRule = null;
-        } else if (recurrenceOption != SublimeRecurrencePicker.RecurrenceOption.CUSTOM) {
-            recurrenceRule = null;
-        }
-
-        mRecurrenceOption = recurrenceOption;
-        mRecurrenceRule = recurrenceRule;
-        return this;
-    }
-
     @SuppressWarnings("unused")
     public String getRecurrenceRule() {
         return mRecurrenceRule == null ?
                 "" : mRecurrenceRule;
-    }
-
-    @SuppressWarnings("unused")
-    public SublimeRecurrencePicker.RecurrenceOption getRecurrenceOption() {
-        return mRecurrenceOption == null ?
-                SublimeRecurrencePicker.RecurrenceOption.DOES_NOT_REPEAT : mRecurrenceOption;
     }
 
     public boolean isDatePickerActive() {

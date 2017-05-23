@@ -61,13 +61,6 @@
                     android:text="TimePicker"
                     android:textSize="@dimen/sampler_text_size" />
 
-                <CheckBox
-                    android:id="@+id/cbRecurrencePicker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="RecurrencePicker"
-                    android:textSize="@dimen/sampler_text_size" />
-
             </LinearLayout>
 
             <TextView
@@ -101,13 +94,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TimePicker"
-                    android:textSize="@dimen/sampler_text_size" />
-
-                <RadioButton
-                    android:id="@+id/rbRecurrencePicker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="RecurrencePicker"
                     android:textSize="@dimen/sampler_text_size" />
 
             </RadioGroup>
@@ -270,50 +256,6 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:layout_weight="1" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvRecurrenceLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/llTimeHolder"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:textColor="?attr/colorAccent"
-                    android:textAllCaps="true"
-                    android:text="Recurrence" />
-
-                <LinearLayout
-                    android:id="@+id/llRecurrenceHolder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/info_bg"
-                    android:layout_below="@id/tvRecurrenceLabel">
-
-                    <TextView
-                        android:id="@+id/tvRecurrenceOption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
-                        android:textColor="@android:color/white" />
-
-                    <TextView
-                        android:id="@+id/tvRecurrenceRule"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginRight="10dp"
-                        android:textColor="@android:color/white" />
 
                 </LinearLayout>
 

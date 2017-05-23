@@ -39,7 +39,6 @@ import android.widget.Toast;
 
 import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
-import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -52,8 +51,8 @@ public class Sampler extends AppCompatActivity {
     ImageView ivLaunchPicker;
 
     // SublimePicker options
-    CheckBox cbDatePicker, cbTimePicker, cbRecurrencePicker, cbAllowDateRangeSelection;
-    RadioButton rbDatePicker, rbTimePicker, rbRecurrencePicker;
+    CheckBox cbDatePicker, cbTimePicker, cbAllowDateRangeSelection;
+    RadioButton rbDatePicker, rbTimePicker;
 
     // Labels
     TextView tvPickerToShow, tvActivatedPickers;
@@ -62,7 +61,7 @@ public class Sampler extends AppCompatActivity {
 
     // Views to display the chosen Date, Time & Recurrence options
     TextView tvYear, tvMonth, tvDay, tvHour,
-            tvMinute, tvRecurrenceOption, tvRecurrenceRule,
+            tvMinute,
             tvStartDate, tvEndDate;
     RelativeLayout rlDateTimeRecurrenceInfo;
     LinearLayout llDateHolder, llDateRangeHolder;
@@ -70,7 +69,6 @@ public class Sampler extends AppCompatActivity {
     // Chosen values
     SelectedDate mSelectedDate;
     int mHour, mMinute;
-    String mRecurrenceOption, mRecurrenceRule;
 
     SublimePickerFragment.Callback mFragmentCallback = new SublimePickerFragment.Callback() {
         @Override
@@ -80,17 +78,11 @@ public class Sampler extends AppCompatActivity {
 
         @Override
         public void onDateTimeRecurrenceSet(SelectedDate selectedDate,
-                                            int hourOfDay, int minute,
-                                            SublimeRecurrencePicker.RecurrenceOption recurrenceOption,
-                                            String recurrenceRule) {
+                                            int hourOfDay, int minute) {
 
             mSelectedDate = selectedDate;
             mHour = hourOfDay;
             mMinute = minute;
-            mRecurrenceOption = recurrenceOption != null ?
-                    recurrenceOption.name() : "n/a";
-            mRecurrenceRule = recurrenceRule != null ?
-                    recurrenceRule : "n/a";
 
             updateInfoView();
 
@@ -128,10 +120,8 @@ public class Sampler extends AppCompatActivity {
         ivLaunchPicker = (ImageView) findViewById(R.id.ivLaunchPicker);
         cbDatePicker = (CheckBox) findViewById(R.id.cbDatePicker);
         cbTimePicker = (CheckBox) findViewById(R.id.cbTimePicker);
-        cbRecurrencePicker = (CheckBox) findViewById(R.id.cbRecurrencePicker);
         rbDatePicker = (RadioButton) findViewById(R.id.rbDatePicker);
         rbTimePicker = (RadioButton) findViewById(R.id.rbTimePicker);
-        rbRecurrencePicker = (RadioButton) findViewById(R.id.rbRecurrencePicker);
         tvPickerToShow = (TextView) findViewById(R.id.tvPickerToShow);
         tvActivatedPickers = (TextView) findViewById(R.id.tvActivatedPickers);
         svMainContainer = (ScrollView) findViewById(R.id.svMainContainer);
@@ -151,9 +141,6 @@ public class Sampler extends AppCompatActivity {
 
         tvHour = ((TextView) findViewById(R.id.tvHour));
         tvMinute = ((TextView) findViewById(R.id.tvMinute));
-
-        tvRecurrenceOption = ((TextView) findViewById(R.id.tvRecurrenceOption));
-        tvRecurrenceRule = ((TextView) findViewById(R.id.tvRecurrenceRule));
 
         rlDateTimeRecurrenceInfo
                 = (RelativeLayout) findViewById(R.id.rlDateTimeRecurrenceInfo);
@@ -205,16 +192,6 @@ public class Sampler extends AppCompatActivity {
             }
         });
 
-        // De/activates Recurrence Picker
-        cbRecurrencePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rbRecurrencePicker.setVisibility(cbRecurrencePicker.isChecked() ?
-                        View.VISIBLE : View.GONE);
-                onActivatedPickersChanged();
-            }
-        });
-
         cbAllowDateRangeSelection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -230,23 +207,18 @@ public class Sampler extends AppCompatActivity {
         if (savedInstanceState == null) { // Default
             cbDatePicker.setChecked(true);
             cbTimePicker.setChecked(true);
-            cbRecurrencePicker.setChecked(true);
             cbAllowDateRangeSelection.setChecked(false);
 
             rbDatePicker.setChecked(true);
         } else { // Restore
             cbDatePicker.setChecked(savedInstanceState.getBoolean(SS_DATE_PICKER_CHECKED));
             cbTimePicker.setChecked(savedInstanceState.getBoolean(SS_TIME_PICKER_CHECKED));
-            cbRecurrencePicker
-                    .setChecked(savedInstanceState.getBoolean(SS_RECURRENCE_PICKER_CHECKED));
             cbAllowDateRangeSelection
                     .setChecked(savedInstanceState.getBoolean(SS_ALLOW_DATE_RANGE_SELECTION));
 
             rbDatePicker.setVisibility(cbDatePicker.isChecked() ?
                     View.VISIBLE : View.GONE);
             rbTimePicker.setVisibility(cbTimePicker.isChecked() ?
-                    View.VISIBLE : View.GONE);
-            rbRecurrencePicker.setVisibility(cbRecurrencePicker.isChecked() ?
                     View.VISIBLE : View.GONE);
 
             onActivatedPickersChanged();
@@ -268,8 +240,6 @@ public class Sampler extends AppCompatActivity {
 
                 mHour = savedInstanceState.getInt(SS_HOUR);
                 mMinute = savedInstanceState.getInt(SS_MINUTE);
-                mRecurrenceOption = savedInstanceState.getString(SS_RECURRENCE_OPTION);
-                mRecurrenceRule = savedInstanceState.getString(SS_RECURRENCE_RULE);
 
                 updateInfoView();
             }
@@ -308,16 +278,11 @@ public class Sampler extends AppCompatActivity {
             displayOptions |= SublimeOptions.ACTIVATE_TIME_PICKER;
         }
 
-        if (cbRecurrencePicker.isChecked()) {
-            displayOptions |= SublimeOptions.ACTIVATE_RECURRENCE_PICKER;
-        }
 
         if (rbDatePicker.getVisibility() == View.VISIBLE && rbDatePicker.isChecked()) {
             options.setPickerToShow(SublimeOptions.Picker.DATE_PICKER);
         } else if (rbTimePicker.getVisibility() == View.VISIBLE && rbTimePicker.isChecked()) {
             options.setPickerToShow(SublimeOptions.Picker.TIME_PICKER);
-        } else if (rbRecurrencePicker.getVisibility() == View.VISIBLE && rbRecurrencePicker.isChecked()) {
-            options.setPickerToShow(SublimeOptions.Picker.REPEAT_OPTION_PICKER);
         }
 
         options.setDisplayOptions(displayOptions);
@@ -349,8 +314,7 @@ public class Sampler extends AppCompatActivity {
     // This is also a sample app only method & can be skipped.
     void onActivatedPickersChanged() {
         if (!cbDatePicker.isChecked()
-                && !cbTimePicker.isChecked()
-                && !cbRecurrencePicker.isChecked()) {
+                && !cbTimePicker.isChecked()) {
 
             // None of the pickers have been activated
             tvActivatedPickers.setText("Pickers to activate (choose at least one):");
@@ -361,8 +325,7 @@ public class Sampler extends AppCompatActivity {
             tvPickerToShow.setText("Picker to show on dialog creation:");
 
             if ((rbDatePicker.isChecked() && rbDatePicker.getVisibility() != View.VISIBLE)
-                    || (rbTimePicker.isChecked() && rbTimePicker.getVisibility() != View.VISIBLE)
-                    || (rbRecurrencePicker.isChecked() && rbRecurrencePicker.getVisibility() != View.VISIBLE)) {
+                    || (rbTimePicker.isChecked() && rbTimePicker.getVisibility() != View.VISIBLE)) {
                 if (rbDatePicker.getVisibility() == View.VISIBLE) {
                     rbDatePicker.setChecked(true);
                     return;
@@ -373,9 +336,6 @@ public class Sampler extends AppCompatActivity {
                     return;
                 }
 
-                if (rbRecurrencePicker.getVisibility() == View.VISIBLE) {
-                    rbRecurrencePicker.setChecked(true);
-                }
             }
         }
     }
@@ -407,11 +367,6 @@ public class Sampler extends AppCompatActivity {
         tvHour.setText(applyBoldStyle("HOUR: ").append(String.valueOf(mHour)));
         tvMinute.setText(applyBoldStyle("MINUTE: ").append(String.valueOf(mMinute)));
 
-        tvRecurrenceOption.setText(applyBoldStyle("RECURRENCE OPTION: ")
-                .append(mRecurrenceOption));
-        tvRecurrenceRule.setText(applyBoldStyle("RECURRENCE RULE: ").append(
-                mRecurrenceRule));
-
         rlDateTimeRecurrenceInfo.setVisibility(View.VISIBLE);
     }
 
@@ -426,7 +381,6 @@ public class Sampler extends AppCompatActivity {
     // Keys for saving state
     final String SS_DATE_PICKER_CHECKED = "saved.state.date.picker.checked";
     final String SS_TIME_PICKER_CHECKED = "saved.state.time.picker.checked";
-    final String SS_RECURRENCE_PICKER_CHECKED = "saved.state.recurrence.picker.checked";
     final String SS_ALLOW_DATE_RANGE_SELECTION = "saved.state.allow.date.range.selection";
     final String SS_START_YEAR = "saved.state.start.year";
     final String SS_START_MONTH = "saved.state.start.month";
@@ -436,8 +390,6 @@ public class Sampler extends AppCompatActivity {
     final String SS_END_DAY = "saved.state.end.day";
     final String SS_HOUR = "saved.state.hour";
     final String SS_MINUTE = "saved.state.minute";
-    final String SS_RECURRENCE_OPTION = "saved.state.recurrence.option";
-    final String SS_RECURRENCE_RULE = "saved.state.recurrence.rule";
     final String SS_INFO_VIEW_VISIBILITY = "saved.state.info.view.visibility";
     final String SS_SCROLL_Y = "saved.state.scroll.y";
 
@@ -447,7 +399,6 @@ public class Sampler extends AppCompatActivity {
         // State of RadioButtons can be evaluated
         outState.putBoolean(SS_DATE_PICKER_CHECKED, cbDatePicker.isChecked());
         outState.putBoolean(SS_TIME_PICKER_CHECKED, cbTimePicker.isChecked());
-        outState.putBoolean(SS_RECURRENCE_PICKER_CHECKED, cbRecurrencePicker.isChecked());
         outState.putBoolean(SS_ALLOW_DATE_RANGE_SELECTION, cbAllowDateRangeSelection.isChecked());
 
         int startYear = mSelectedDate != null ? mSelectedDate.getStartDate().get(Calendar.YEAR) : INVALID_VAL;
@@ -467,8 +418,6 @@ public class Sampler extends AppCompatActivity {
         outState.putInt(SS_END_DAY, endDayOfMonth);
         outState.putInt(SS_HOUR, mHour);
         outState.putInt(SS_MINUTE, mMinute);
-        outState.putString(SS_RECURRENCE_OPTION, mRecurrenceOption);
-        outState.putString(SS_RECURRENCE_RULE, mRecurrenceRule);
         outState.putBoolean(SS_INFO_VIEW_VISIBILITY,
                 rlDateTimeRecurrenceInfo.getVisibility() == View.VISIBLE);
         outState.putInt(SS_SCROLL_Y, svMainContainer.getScrollY());
