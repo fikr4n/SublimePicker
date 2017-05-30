@@ -40,7 +40,7 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
-//group = 'com.github.wahidnr'
+group = 'com.github.wahidnr'
 
 android {
     compileSdkVersion 23
