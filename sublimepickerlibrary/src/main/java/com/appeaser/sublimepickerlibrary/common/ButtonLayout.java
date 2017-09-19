@@ -32,6 +32,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.appeaser.sublimepickerlibrary.R;
 import com.appeaser.sublimepickerlibrary.utilities.SUtils;
@@ -39,6 +40,7 @@ import com.appeaser.sublimepickerlibrary.utilities.SUtils;
 public class ButtonLayout extends LinearLayout implements View.OnClickListener {
     // Can be 'android.widget.Button' or 'android.widget.ImageView'
     View mPositiveButton, mNegativeButton;
+    TextView mNeutralButton;
 
     // 'Button' used for switching between 'SublimeDatePicker'
     // and 'SublimeTimePicker'. Also displays the currently
@@ -49,6 +51,8 @@ public class ButtonLayout extends LinearLayout implements View.OnClickListener {
             mButtonBarBgColor;
 
     ButtonHandler.Callback mCallback;
+
+    String mNeutralText;
 
     public ButtonLayout(Context context) {
         this(context, null);
@@ -99,6 +103,7 @@ public class ButtonLayout extends LinearLayout implements View.OnClickListener {
 
         Button bPositive = (Button) findViewById(R.id.buttonPositive);
         Button bNegative = (Button) findViewById(R.id.buttonNegative);
+        Button bNeutral = (Button) findViewById(R.id.buttonNeutral);
 
         ImageView ivPositive = (ImageView) findViewById(R.id.imageViewPositive);
         ImageView ivNegative = (ImageView) findViewById(R.id.imageViewNegative);
@@ -165,6 +170,12 @@ public class ButtonLayout extends LinearLayout implements View.OnClickListener {
                 mPositiveButton = ivPositive;
                 mNegativeButton = ivNegative;
             }
+
+            bNeutral.setVisibility(View.VISIBLE);
+            SUtils.setViewBackground(bNeutral,
+                    SUtils.createButtonBg(context, bgColor,
+                            pressedBgColor));
+            mNeutralButton = bNeutral;
         } finally {
             a.recycle();
         }
@@ -172,6 +183,7 @@ public class ButtonLayout extends LinearLayout implements View.OnClickListener {
         // set OnClickListeners
         mPositiveButton.setOnClickListener(this);
         mNegativeButton.setOnClickListener(this);
+        mNeutralButton.setOnClickListener(this);
         mSwitcherButton.setOnClickListener(this);
     }
 
@@ -182,9 +194,13 @@ public class ButtonLayout extends LinearLayout implements View.OnClickListener {
      *                         to be shown.
      * @param callback         Callback to 'SublimePicker'
      */
-    public void applyOptions(boolean switcherRequired, @NonNull ButtonHandler.Callback callback) {
+    public void applyOptions(boolean switcherRequired, String neutralText, @NonNull ButtonHandler.Callback callback) {
         mSwitcherButton.setVisibility(switcherRequired ? View.VISIBLE : View.GONE);
         mCallback = callback;
+        mNeutralText = neutralText;
+
+        mNeutralButton.setText(mNeutralText);
+        mNeutralButton.setVisibility(mNeutralText == null ? View.GONE : View.VISIBLE);
     }
 
     // Returns whether switcher button is being used in this layout
@@ -222,6 +238,8 @@ public class ButtonLayout extends LinearLayout implements View.OnClickListener {
             mCallback.onOkay();
         } else if (v == mNegativeButton) {
             mCallback.onCancel();
+        } else if (v == mNeutralButton) {
+            mCallback.onNeutral();
         } else if (v == mSwitcherButton) {
             mCallback.onSwitch();
         }

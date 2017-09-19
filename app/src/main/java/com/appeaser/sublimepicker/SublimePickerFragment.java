@@ -56,6 +56,16 @@ public class SublimePickerFragment extends DialogFragment {
         }
 
         @Override
+        public void onNeutralButtonClick() {
+            if (mCallback != null) {
+                mCallback.onNeutralButtonClick();
+            }
+
+            // Should actually be called by activity inside `Callback.onCancelled()`
+            dismiss();
+        }
+
+        @Override
         public void onDateTimeRecurrenceSet(SublimePicker sublimeMaterialPicker,
                                             SelectedDate selectedDate,
                                             int hourOfDay, int minute) {
@@ -108,6 +118,7 @@ public class SublimePickerFragment extends DialogFragment {
     // For communicating with the activity
     public interface Callback {
         void onCancelled();
+        void onNeutralButtonClick();
 
         void onDateTimeRecurrenceSet(SelectedDate selectedDate,
                                      int hourOfDay, int minute);

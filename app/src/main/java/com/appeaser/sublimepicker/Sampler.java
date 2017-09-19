@@ -77,6 +77,12 @@ public class Sampler extends AppCompatActivity {
         }
 
         @Override
+        public void onNeutralButtonClick() {
+            rlDateTimeRecurrenceInfo.setVisibility(View.GONE);
+            Toast.makeText(Sampler.this, "Neutral button clicked", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
         public void onDateTimeRecurrenceSet(SelectedDate selectedDate,
                                             int hourOfDay, int minute) {
 
@@ -289,6 +295,8 @@ public class Sampler extends AppCompatActivity {
 
         // Enable/disable the date range selection feature
         options.setCanPickDateRange(cbAllowDateRangeSelection.isChecked());
+
+        options.setNeutralButtonText("Reset");
 
         // Example for setting date range:
         // Note that you can pass a date range as the initial date params
