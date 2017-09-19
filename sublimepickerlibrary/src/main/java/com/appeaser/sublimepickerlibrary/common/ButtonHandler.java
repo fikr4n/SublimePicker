@@ -38,7 +38,7 @@ public class ButtonHandler implements View.OnClickListener {
 
     Callback mCallback;
 
-    String mNeutralText;
+    CharSequence mNeutralText;
 
     int mIconOverlayColor /* color used with the applied 'ColorFilter' */,
             mDisabledAlpha /* android.R.attr.disabledAlpha * 255 */,
@@ -225,7 +225,7 @@ public class ButtonHandler implements View.OnClickListener {
      *                         to be shown.
      * @param callback         Callback to 'SublimePicker'
      */
-    public void applyOptions(boolean switcherRequired, String neutralText, @NonNull Callback callback) {
+    public void applyOptions(boolean switcherRequired, CharSequence neutralText, @NonNull Callback callback) {
         mCallback = callback;
         mNeutralText = neutralText;
 

@@ -52,7 +52,7 @@ public class ButtonLayout extends LinearLayout implements View.OnClickListener {
 
     ButtonHandler.Callback mCallback;
 
-    String mNeutralText;
+    CharSequence mNeutralText;
 
     public ButtonLayout(Context context) {
         this(context, null);
@@ -194,7 +194,7 @@ public class ButtonLayout extends LinearLayout implements View.OnClickListener {
      *                         to be shown.
      * @param callback         Callback to 'SublimePicker'
      */
-    public void applyOptions(boolean switcherRequired, String neutralText, @NonNull ButtonHandler.Callback callback) {
+    public void applyOptions(boolean switcherRequired, CharSequence neutralText, @NonNull ButtonHandler.Callback callback) {
         mSwitcherButton.setVisibility(switcherRequired ? View.VISIBLE : View.GONE);
         mCallback = callback;
         mNeutralText = neutralText;
