@@ -127,6 +127,11 @@ public class SublimePicker extends FrameLayout
         }
 
         @Override
+        public void onNeutral() {
+            mListener.onNeutralButtonClick();
+        }
+
+        @Override
         public void onSwitch() {
             mCurrentPicker = mCurrentPicker == SublimeOptions.Picker.DATE_PICKER ?
                     SublimeOptions.Picker.TIME_PICKER
@@ -453,9 +458,11 @@ public class SublimePicker extends FrameLayout
 
         if (mDatePickerEnabled && mTimePickerEnabled) {
             mButtonLayout.applyOptions(true /* show switch button */,
+                    mOptions.getNeutralButtonText(),
                     mButtonLayoutCallback);
         } else {
             mButtonLayout.applyOptions(false /* hide switch button */,
+                    mOptions.getNeutralButtonText(),
                     mButtonLayoutCallback);
         }
 

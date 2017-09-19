@@ -35,6 +35,10 @@ public abstract class SublimeListenerAdapter {
     // Cancel button or icon clicked
     public abstract void onCancelled();
 
+    // Neutral button clicked
+    public void onNeutralButtonClick() {
+    }
+
     /**
      * @param selectedDate The date(or range) that is selected.
      * @return Formatted date to display on `Switcher` button

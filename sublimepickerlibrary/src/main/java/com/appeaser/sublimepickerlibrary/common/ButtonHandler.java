@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.appeaser.sublimepickerlibrary.R;
 import com.appeaser.sublimepickerlibrary.SublimePicker;
@@ -29,12 +30,15 @@ public class ButtonHandler implements View.OnClickListener {
 
     // Can be 'android.widget.Button' or 'android.widget.ImageView'
     View mPositiveButtonDP, mPositiveButtonTP, mNegativeButtonDP, mNegativeButtonTP;
+    TextView mNeutralButtonDP, mNeutralButtonTP;
     // 'Button' used for switching between 'SublimeDatePicker'
     // and 'SublimeTimePicker'. Also displays the currently
     // selected date/time depending on the visible picker
     Button mSwitcherButtonDP, mSwitcherButtonTP;
 
     Callback mCallback;
+
+    String mNeutralText;
 
     int mIconOverlayColor /* color used with the applied 'ColorFilter' */,
             mDisabledAlpha /* android.R.attr.disabledAlpha * 255 */,
@@ -71,6 +75,9 @@ public class ButtonHandler implements View.OnClickListener {
 
         Button bNegativeDP = (Button) sublimeMaterialPicker.findViewById(R.id.buttonNegativeDP);
         Button bNegativeTP = (Button) sublimeMaterialPicker.findViewById(R.id.buttonNegativeTP);
+
+        Button bNeutralDP = (Button) sublimeMaterialPicker.findViewById(R.id.buttonNeutralDP);
+        Button bNeutralTP = (Button) sublimeMaterialPicker.findViewById(R.id.buttonNeutralTP);
 
         ImageView ivPositiveDP = (ImageView) sublimeMaterialPicker.findViewById(R.id.imageViewPositiveDP);
         ImageView ivPositiveTP = (ImageView) sublimeMaterialPicker.findViewById(R.id.imageViewPositiveTP);
@@ -181,6 +188,18 @@ public class ButtonHandler implements View.OnClickListener {
                 mNegativeButtonDP = ivNegativeDP;
                 mNegativeButtonTP = ivNegativeTP;
             }
+
+            bNeutralDP.setVisibility(View.VISIBLE);
+            bNeutralTP.setVisibility(View.VISIBLE);
+
+            SUtils.setViewBackground(bNeutralDP,
+                    SUtils.createButtonBg(context, bgColor,
+                            pressedBgColor));
+            SUtils.setViewBackground(bNeutralTP,
+                    SUtils.createButtonBg(context, bgColor,
+                            pressedBgColor));
+            mNeutralButtonDP = bNeutralDP;
+            mNeutralButtonTP = bNeutralTP;
         } finally {
             a.recycle();
         }
@@ -191,6 +210,9 @@ public class ButtonHandler implements View.OnClickListener {
 
         mNegativeButtonDP.setOnClickListener(this);
         mNegativeButtonTP.setOnClickListener(this);
+
+        mNeutralButtonDP.setOnClickListener(this);
+        mNeutralButtonTP.setOnClickListener(this);
 
         mSwitcherButtonDP.setOnClickListener(this);
         mSwitcherButtonTP.setOnClickListener(this);
@@ -203,15 +225,25 @@ public class ButtonHandler implements View.OnClickListener {
      *                         to be shown.
      * @param callback         Callback to 'SublimePicker'
      */
-    public void applyOptions(boolean switcherRequired, @NonNull Callback callback) {
+    public void applyOptions(boolean switcherRequired, String neutralText, @NonNull Callback callback) {
         mCallback = callback;
+        mNeutralText = neutralText;
+
+        if (mNeutralButtonDP != null) {
+            mNeutralButtonDP.setText(mNeutralText);
+            mNeutralButtonDP.setVisibility(mNeutralText == null ? View.GONE : View.VISIBLE);
+        }
+        if (mNeutralButtonTP != null) {
+            mNeutralButtonTP.setText(mNeutralText);
+            mNeutralButtonTP.setVisibility(mNeutralText == null ? View.GONE : View.VISIBLE);
+        }
 
         if (mIsInLandscapeMode) {
             mSwitcherButtonDP.setVisibility(switcherRequired ? View.VISIBLE : View.GONE);
             mSwitcherButtonTP.setVisibility(switcherRequired ? View.VISIBLE : View.GONE);
         } else {
             // Let ButtonLayout handle callbacks
-            mPortraitButtonHandler.applyOptions(switcherRequired, callback);
+            mPortraitButtonHandler.applyOptions(switcherRequired, neutralText, callback);
         }
     }
 
@@ -267,6 +299,8 @@ public class ButtonHandler implements View.OnClickListener {
             mCallback.onOkay();
         } else if (v == mNegativeButtonDP || v == mNegativeButtonTP) {
             mCallback.onCancel();
+        } else if (v == mNeutralButtonDP || v == mNeutralButtonTP) {
+            mCallback.onNeutral();
         } else if (v == mSwitcherButtonDP || v == mSwitcherButtonTP) {
             mCallback.onSwitch();
         }
@@ -275,6 +309,7 @@ public class ButtonHandler implements View.OnClickListener {
     public interface Callback {
         void onOkay();
         void onCancel();
+        void onNeutral();
         void onSwitch();
     }
 }

@@ -58,6 +58,9 @@ public class SublimeOptions implements Parcelable {
     // Allow date range selection
     private boolean mCanPickDateRange;
 
+    // Null to hide
+    private String mNeutralButtonText = null;
+
     // Defaults
     private Picker mPickerToShow = Picker.DATE_PICKER;
 
@@ -282,6 +285,15 @@ public class SublimeOptions implements Parcelable {
         return mCanPickDateRange;
     }
 
+    public SublimeOptions setNeutralButtonText(String mNeutralButtonText) {
+        this.mNeutralButtonText = mNeutralButtonText;
+        return this;
+    }
+
+    public String getNeutralButtonText() {
+        return mNeutralButtonText;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -302,6 +314,7 @@ public class SublimeOptions implements Parcelable {
         mIs24HourView = in.readByte() != 0;
         mRecurrenceRule = in.readString();
         mCanPickDateRange = in.readByte() != 0;
+        mNeutralButtonText = in.readString();
     }
 
     @Override
@@ -320,6 +333,7 @@ public class SublimeOptions implements Parcelable {
         dest.writeByte((byte) (mIs24HourView ? 1 : 0));
         dest.writeString(mRecurrenceRule);
         dest.writeByte((byte) (mCanPickDateRange ? 1 : 0));
+        dest.writeString(mNeutralButtonText);
     }
 
     public static final Parcelable.Creator<SublimeOptions> CREATOR = new Parcelable.Creator<SublimeOptions>() {

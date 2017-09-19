@@ -186,6 +186,14 @@
         android:paddingTop="@dimen/sp_button_bar_padding_top"
         android:paddingBottom="@dimen/sp_button_bar_padding_bottom">
 
+        <Button
+            android:id="@+id/buttonNeutralTP"
+            style="?attr/spLandscapeButtonModeOkCancelButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_weight="0" />
+
         <Space
             android:layout_width="0dp"
             android:layout_height="0dp"
