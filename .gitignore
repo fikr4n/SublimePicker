@@ -1,3 +1,5 @@
+new-file-that-ignored
+
 *.iml
 .gradle
 /local.properties
