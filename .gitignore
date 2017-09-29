@@ -1,3 +1,16 @@
+new-file-that-ignored
+new-file-that-ignored
+new-file-that-ignored
+new-file-that-ignored
+new-file-that-ignored
+new-file-that-ignored
+new-file-that-ignored
+new-file-that-ignored
+new-file-that-ignored
+new-file-that-ignored
+new-file-that-ignored
+
+*.iml
 .gradle
 /local.properties
 /.idea/workspace.xml
@@ -5,3 +18,6 @@
 .DS_Store
 /build
 /captures
+.externalNativeBuild
+
+another-ignored-file
